@@ -12,7 +12,7 @@ class Mainpage extends React.Component{
             searchfield:'',
             sortoption:'',
             result:null,
-            formnav:'goodsForm',
+            formnav:'inventoryForm',
             formsubmit:null
         }
     }
@@ -36,19 +36,8 @@ class Mainpage extends React.Component{
         this.setState({formnav:whichform})
     }
 
-    // onFormChange = (formsub)=>{
-    //     console.log(formsub);
-    //     this.setState({formsubmit:formsub})
-    // }
-
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-    
-        this.setState({
-          [name]: value
-        });
+    handleSubmit(newform) {
+        console.log(newform);
      }
 
     // "this" locates where the function is called 
@@ -69,7 +58,7 @@ class Mainpage extends React.Component{
                 data={filterThings}
                 onSetFormNav={this.onSetFormNav}
                 formnav={this.state.formnav}
-                handleInputChange={this.handleInputChange}
+                handleInputChange={this.handleSubmit}
                 />
             </div>
         );
