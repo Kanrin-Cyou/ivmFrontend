@@ -24,23 +24,11 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
-// import { createMuiTheme } from '@material-ui/core/styles';
 import InputForm from '../form/form';
 
 import ListGroup from '../listgroup/listgroup';
 
 const drawerWidth = 240;
-
-// const theme = createMuiTheme({
-//   palette: {
-//     primary: {
-//       main: '#2196f3',
-//     },
-//     secondary: {
-//       main: '#f50057',
-//     },
-//   },
-// });
 
 const useStyles = makeStyles((theme) => ({
   root: {
