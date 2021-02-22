@@ -1,8 +1,8 @@
 import React from 'react';
 import './mainpage.style.scss';
-import MiniDrawer from '../../containers/sidebar/sidebar';
+import Sidebar from '../../containers/sidebar/sidebar';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import summaryForm from './constants';
 
 class Mainpage extends React.Component{
     constructor(){
@@ -11,21 +11,21 @@ class Mainpage extends React.Component{
             loading:false,
             searchfield:'',
             sortoption:'',
-            result:null,
+            formdata:'',
             formnav:'inventoryForm',
-            formsubmit:null
         }
     }
     
     componentDidMount(){
-        fetch('http://localhost:3001/mainpage',{
-            method: 'post',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({
-                hello:'hello'
-            })})
-            .then(response => response.json())
-            .then(data => {this.setState({result:data, loading:true})})
+        this.onSubmitForm();
+        // // fetch('http://localhost:3001/mainpage',{
+        // //     method: 'post',
+        // //     headers: {'Content-Type':'application/json'},
+        // //     body: JSON.stringify({
+        // //         hello:'hello'
+        // //     })})
+        // //     .then(response => response.json())
+        // //     .then(data => {this.setState({formdata:data, loading:true})})
     }
 
     onSearchChange = (event) => {
@@ -33,32 +33,42 @@ class Mainpage extends React.Component{
     }
     
     onSetFormNav = (whichform) => {
-        this.setState({formnav:whichform})
+        this.setState({formnav:whichform});
+        this.onSubmitForm();
     }
 
-    handleSubmit(newform) {
-        console.log(newform);
-     }
+    onSubmitForm = (newform="hello") => {
+        fetch('http://localhost:3001/form',{
+            method: 'post',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+               "formnav":this.state.formnav,
+               "data":newform
+            })})
+            .then(response => response.json())
+            .then(data => {this.setState({formdata:data, loading:true})})
+    }
 
     // "this" locates where the function is called 
 
     render(){
 
     if(this.state.loading){
-        const filterThings = this.state.result.filter(result => {
-        return result.title.toLowerCase().includes(this.state.searchfield.toLowerCase())});
+        console.log(this.state.formdata)
+        // const filterThings = this.state.formdata.filter(formdata => {
+        // return formdata.title.toLowerCase().includes(this.state.searchfield.toLowerCase())});
 
         return(
             <div id='mainpage'>
-                <MiniDrawer 
+                <Sidebar 
                 onRouteChange={this.props.onRouteChange} 
                 onSearchChange={this.onSearchChange}
-                sortChange={this.onSortChange} 
                 loading={this.state.loading} 
-                data={filterThings}
+                data={this.state.formdata}
                 onSetFormNav={this.onSetFormNav}
                 formnav={this.state.formnav}
-                handleInputChange={this.handleSubmit}
+                summaryForm={summaryForm}
+                handleInputChange={this.onSubmitForm}
                 />
             </div>
         );

@@ -1,19 +1,31 @@
 import React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
-const ListGroup = ({sortChange,loading,data}) => {
 
-    const columns = [
-        { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'category', headerName: 'Category', width: 130 },
-        { field: 'title', headerName: 'name', width: 500 },
-        {
-          field: 'price',
-          headerName: 'price',
-          type: 'number',
-          width: 90,
-        },
-      ];
+const ListGroup = ({summaryForm,formnav,loading,data}) => {
+
+    const columns = () => {
+        const listtitle = [];
+        summaryForm[formnav].map((item,i) => {
+            return listtitle.push({
+                            field: item,
+                            headerName: item,
+                            width:120})
+        })
+        return listtitle
+    }
+
+    // const columns = [
+    //     { field: 'id', headerName: 'ID', width: 70 },
+    //     { field: 'category', headerName: 'Category', width: 130 },
+    //     { field: 'title', headerName: 'name', width: 500 },
+    //     {
+    //       field: 'price',
+    //       headerName: 'price',
+    //       type: 'number',
+    //       width: 90,
+    //     },
+    //   ];
 
     return(
             <div>
@@ -28,7 +40,7 @@ const ListGroup = ({sortChange,loading,data}) => {
                     <div style={{ height: "80vh", width: '100%' }}>
                         <DataGrid sortModel={() => (typeof data)}
                                   rows={data} 
-                                  columns={columns} 
+                                  columns={columns()} 
                                   pageSize={10} 
                                   checkboxSelection/>
                     </div>

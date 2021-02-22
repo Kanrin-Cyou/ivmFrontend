@@ -274,11 +274,12 @@ export default function MiniDrawer(props) {
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <InputForm formnav={props.formnav} onFormSubmit={props.handleInputChange}/>
+        <InputForm formnav={props.formnav} summaryForm={props.summaryForm} onFormSubmit={props.handleInputChange}/>
         <ListGroup 
-          sortChange={props.sortChange} 
           loading={props.loading} 
           data={props.data}
+          summaryForm={props.summaryForm}
+          formnav={props.formnav}
         />
       </main>
 
