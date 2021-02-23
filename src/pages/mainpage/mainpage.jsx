@@ -9,6 +9,7 @@ class Mainpage extends React.Component{
         super();
         this.state = {
             loading:false,
+            loadingForm:false,
             searchfield:'',
             sortoption:'',
             formdata:'',
@@ -18,14 +19,10 @@ class Mainpage extends React.Component{
     
     componentDidMount(){
         this.onSubmitForm();
-        // // fetch('http://localhost:3001/mainpage',{
-        // //     method: 'post',
-        // //     headers: {'Content-Type':'application/json'},
-        // //     body: JSON.stringify({
-        // //         hello:'hello'
-        // //     })})
-        // //     .then(response => response.json())
-        // //     .then(data => {this.setState({formdata:data, loading:true})})
+    }
+
+    componentDidUpdate(){
+        if(!this.state.loadingForm){this.onSubmitForm()};
     }
 
     onSearchChange = (event) => {
@@ -33,11 +30,10 @@ class Mainpage extends React.Component{
     }
     
     onSetFormNav = (whichform) => {
-        this.setState({formnav:whichform});
-        this.onSubmitForm();
+        this.setState({loadingForm:false,formnav:whichform});
     }
 
-    onSubmitForm = (newform="hello") => {
+    onSubmitForm = (newform='') => {
         fetch('http://localhost:3001/form',{
             method: 'post',
             headers: {'Content-Type':'application/json'},
@@ -46,7 +42,7 @@ class Mainpage extends React.Component{
                "data":newform
             })})
             .then(response => response.json())
-            .then(data => {this.setState({formdata:data, loading:true})})
+            .then(data => {this.setState({formdata:data,loading:true,loadingForm:true})})
     }
 
     // "this" locates where the function is called 
@@ -54,7 +50,6 @@ class Mainpage extends React.Component{
     render(){
 
     if(this.state.loading){
-        console.log(this.state.formdata)
         // const filterThings = this.state.formdata.filter(formdata => {
         // return formdata.title.toLowerCase().includes(this.state.searchfield.toLowerCase())});
 
