@@ -13,7 +13,7 @@ class Mainpage extends React.Component{
             searchfield:'',
             sortoption:'',
             formdata:'',
-            formnav:'inventoryForm',
+            formnav:'inventory',
         }
     }
     
@@ -33,17 +33,42 @@ class Mainpage extends React.Component{
         this.setState({loadingForm:false,formnav:whichform});
     }
 
-    onSubmitForm = (newform='') => {
-        fetch('http://localhost:3001/form',{
-            method: 'post',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({
-               "formnav":this.state.formnav,
-               "data":newform
-            })})
-            .then(response => response.json())
-            .then(data => {this.setState({formdata:data,loading:true,loadingForm:true})})
-    }
+    onSubmitForm = (newform = '') => {
+            fetch('http://localhost:3001/form',{
+                method: 'post',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                   "formnav":this.state.formnav,
+                   "data":newform
+                })})
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    this.setState({formdata:data,loading:true,loadingForm:true})})
+        }
+
+    // if (newform === ''){
+    //     fetch('http://localhost:3001/form',{
+    //         method: 'post',
+    //         headers: {'Content-Type':'application/json'},
+    //         body: JSON.stringify({
+    //            "formnav":this.state.formnav,
+    //         })})
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             console.log(data);
+    //             this.setState({formdata:data,loading:true,loadingForm:true})})
+    // } else {
+    //     fetch('http://localhost:3001/submit',{
+    //         method: 'post',
+    //         headers: {'Content-Type':'application/json'},
+    //         body: JSON.stringify({
+    //            "formnav":this.state.formnav,
+    //            "data":newform
+    //         })})
+    //         .then(response => response.json())
+    //         .then(data => {console.log(data)})
+    // }
 
     // "this" locates where the function is called 
 

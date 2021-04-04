@@ -1,19 +1,23 @@
-const customerForm =['id','客户全称','客户邮编','客户公司地址','客户公司电话','联系人','联系电话','开户银行','银行帐号','联系人信箱','客户传真','状态'];
-const goodsForm =['id','商品名称','产地','规格','包装','生产批号','批准文号','描述','价格','供应商编号','状态'];
-const importsForm =['id','供应商编号','支付类型','进货时间','操作员','数量','注释','商品编号'];
-const returnForm =['id','供应商编号','支付类型','退货时间','操作员','数量','注释','商品编号'];
-const supplyerForm =['id','供应商全称','供应商邮编','公司地址','公司电话','联系人','联系人电话','开户银行','银行帐号','联系人邮箱','公司传真','状态'];
-const salesForm =['id','客户编号','支付类型','销售时间','操作员','数量','注释','商品编号'];
-const salesReturnForm =['id','客户编号','支付类型','退货时间','操作员','数量','注释','商品编号'];
-const inventoryForm =['id','商品编号','数量'];
+const customer =['id','name','postal','address','telephone','contact_person','contact_person_phone','bank','bank_account','email','fax','status'];
+const supplyer =['id','name','postal','address','telephone','contact_person','contact_person_phone','bank','bank_account','email','fax','status'];
+
+const imports =['id','supplyer_id','payment_type','time','operator','quantity','note','sku'];
+const importsreturn =['id','supplyer_id','payment_type','time','operator','quantity','note','sku'];
+const sales =['id','customer_id','payment_type','time','operator','quantity','note','sku'];
+const salesreturn =['id','customer_id','payment_type','time','operator','quantity','note','sku'];
+
+const goods =['id','name','origin','standard','package','batch','approval','note','price','supplyer_id','status'];
+const inventory =['id','sku','stock'];
+
 const summaryForm = {
-     'customerForm':customerForm,
-     'goodsForm':goodsForm,
-     'importsForm':importsForm,
-     'returnForm':returnForm,
-     'supplyerForm':supplyerForm,
-     'salesForm':salesForm,
-     'salesReturnForm':salesReturnForm,
-     'inventoryForm':inventoryForm
+     'customer':customer,
+     'imports':imports,
+     'importsreturn':importsreturn,
+     'supplyer':supplyer,
+     'sales':sales,
+     'salesreturn':salesreturn,
+     'goods':goods,
+     'inventory':inventory
 }
+
 export default summaryForm;

@@ -138,14 +138,15 @@ export default function MiniDrawer(props) {
   const [openFolder, setFolderOpen] = React.useState(false);
 
   const summaryList = [
-    ["客户表","customerForm"],
-    ["商品表","goodsForm"],
-    ["进货表","importsForm"],
-    ["退货表","returnForm"],
-    ["供应商表","supplyerForm"],
-    ["销售表","salesForm"],
-    ["销售退货表","salesReturnForm"],
-    ["库存表","inventoryForm"]]
+    ["Customer","customer"],
+    ["Supplyer","supplyer"],
+    ["Goods","goods"],
+    ["Inventory","inventory"],
+    ["Imports","imports"],
+    ["Imports Return","importsreturn"],
+    ["Sales","sales"],
+    ["Sales Return","salesreturn"]
+    ]
 
   const formGenerator = (whatForm) => {
     const formComponent = whatForm.map((item,i) => { 
@@ -277,7 +278,7 @@ export default function MiniDrawer(props) {
         <InputForm formnav={props.formnav} summaryForm={props.summaryForm} onFormSubmit={props.handleInputChange}/>
         <ListGroup 
           loading={props.loading} 
-          data={props.data}
+          data={props.data ? props.data : ' '}
           summaryForm={props.summaryForm}
           formnav={props.formnav}
         />
