@@ -281,6 +281,7 @@ export default function MiniDrawer(props) {
           data={props.data ? props.data : ' '}
           summaryForm={props.summaryForm}
           formnav={props.formnav}
+          onDeleteFrom={props.onDeleteFrom}
         />
       </main>
 

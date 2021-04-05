@@ -88,14 +88,16 @@ function stableSort(array, comparator) {
 }
 
 function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort,summaryForm,formnav } = props;
+  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort,summaryForm,formnav} = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
   return (
     <TableHead>
+
       <TableRow>
+        
         <TableCell padding="checkbox">
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -104,6 +106,7 @@ function EnhancedTableHead(props) {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell>
+
         {summaryForm[formnav].map((headCell) => (
           <TableCell
             key={headCell}
@@ -125,6 +128,7 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
+
       </TableRow>
     </TableHead>
   );
@@ -160,9 +164,11 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected,formnav } = props;
+  const { numSelected,formnav,deleteSubmit } = props;
 
   return (
     <Toolbar
@@ -182,7 +188,7 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" onClick={(event) => deleteSubmit()} >
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -225,7 +231,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({summaryForm,formnav,loading,data}) {
+export default function EnhancedTable({summaryForm,formnav,loading,data,onDeleteFrom}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -233,6 +239,12 @@ export default function EnhancedTable({summaryForm,formnav,loading,data}) {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const deleteSubmit = () => {
+    onDeleteFrom(selected);
+    setSelected([]);
+  } 
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -252,7 +264,6 @@ export default function EnhancedTable({summaryForm,formnav,loading,data}) {
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name);
     } else if (selectedIndex === 0) {
@@ -265,7 +276,7 @@ export default function EnhancedTable({summaryForm,formnav,loading,data}) {
         selected.slice(selectedIndex + 1),
       );
     }
-
+    
     setSelected(newSelected);
   };
 
@@ -300,7 +311,7 @@ export default function EnhancedTable({summaryForm,formnav,loading,data}) {
             <div className={classes.root}>
                 
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} formnav={formnav}/>
+                <EnhancedTableToolbar numSelected={selected.length} formnav={formnav} deleteSubmit={deleteSubmit}/>
                 <TableContainer>
                 <Table
                     className={classes.table}

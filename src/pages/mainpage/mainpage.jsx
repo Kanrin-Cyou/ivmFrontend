@@ -13,7 +13,7 @@ class Mainpage extends React.Component{
             searchfield:'',
             sortoption:'',
             formdata:'',
-            formnav:'inventory',
+            formnav:'inventory'
         }
     }
     
@@ -46,6 +46,34 @@ class Mainpage extends React.Component{
                     console.log(data);
                     this.setState({formdata:data,loading:true,loadingForm:true})})
         }
+
+    onDeleteFrom = (deletelist = ['']) => {
+        fetch('http://localhost:3001/deletelist',{
+                method: 'post',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                   "formnav":this.state.formnav,
+                   "deletelist":deletelist
+                })})
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    this.setState({formdata:data,loading:true,loadingForm:true})})
+    }
+
+    onModifyFrom = (modifyform = ['']) => {
+        fetch('http://localhost:3001/modifyform',{
+                method: 'post',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({
+                   "formnav":this.state.formnav,
+                   "modifyform":modifyform
+                })})
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    this.setState({formdata:data,loading:true,loadingForm:true})})
+    }
 
     // if (newform === ''){
     //     fetch('http://localhost:3001/form',{
@@ -89,6 +117,7 @@ class Mainpage extends React.Component{
                 formnav={this.state.formnav}
                 summaryForm={summaryForm}
                 handleInputChange={this.onSubmitForm}
+                onDeleteFrom={this.onDeleteFrom}
                 />
             </div>
         );

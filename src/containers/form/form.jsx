@@ -59,16 +59,25 @@ export default function FormPropsTextFields(props) {
       }) 
  
     return (
-      <form className={classes.root} noValidate autoComplete="off">
+      <form className={classes.root} noValidate autoComplete="off" >
             {formComponent}
+            <Button
+                variant="contained"
+                color="default"
+                className={classes.button}
+                onClick = {changeSubmit}
+                startIcon={<CloudUploadIcon />}
+              >
+                Upload
+            </Button>
+
             <Button
               variant="contained"
               color="default"
               className={classes.button}
-              onClick = {changeSubmit}
               startIcon={<CloudUploadIcon />}
             >
-              Upload
+              Modify
             </Button>
       </form>
     )}
