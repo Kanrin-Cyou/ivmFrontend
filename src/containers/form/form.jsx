@@ -14,7 +14,6 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
     },
   },
-
 }));
 
 export default function FormPropsTextFields(props) {
@@ -32,11 +31,10 @@ export default function FormPropsTextFields(props) {
   const changeSubmit = () => {
     props.onFormSubmit(state);
     setState({});
-  } 
+  }
 
-  const formGenerator = (whatForm) => {
-      const formComponent = whatForm.map((item,i) => {
-          
+  const formGenerator = (whatForm,modifiedData) => {
+      const formComponent = whatForm.map((item,i)=>{
           if (item.includes("id")){
           }
           else if (item.includes("time")){
@@ -45,16 +43,16 @@ export default function FormPropsTextFields(props) {
                 key={i}
                 label={item}
                 name={item}
-                value={state[item] || ''}
+                value={modifiedData[0]? modifiedData[0][item] : state[item] || ''}
                 variant="outlined"
                 type="datetime-local"
                 className={classes.textField}
                 InputLabelProps={{shrink: true}}
                 onChange={changeHandler}/>)
           } else if (item.includes("stock")){
-            return (<TextField key={i} id="outlined-number" label={item} name={item} type="number" value={state[item] || ''} variant="outlined"  onChange={changeHandler}/>)
+            return (<TextField key={i} id="outlined-number" label={item} name={item} type="number" value={modifiedData[0]? modifiedData[0][item] : state[item] || ''} variant="outlined"  onChange={changeHandler}/>)
           } else {
-            return (<TextField key={i}  id={item} label={item} name={item} value={state[item] || ''} variant="outlined" onChange={changeHandler}/>)
+            return (<TextField key={i}  id={item} label={item} name={item} value={modifiedData[0]? modifiedData[0][item] : state[item] || ''} variant="outlined" onChange={changeHandler}/>)
           }
       }) 
  
@@ -84,9 +82,9 @@ export default function FormPropsTextFields(props) {
 
   const formdisplay = () => {
       if (props.summaryForm.hasOwnProperty(props.formnav)){
-        return formGenerator(props.summaryForm[props.formnav])
+        return formGenerator(props.summaryForm[props.formnav],props.modifiedData)
       } else {
-        return formGenerator(props.summaryForm["inventory"])
+        return formGenerator(props.summaryForm["inventory"],props.modifiedData)
       }
     }
 

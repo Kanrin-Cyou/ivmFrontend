@@ -60,6 +60,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -128,6 +129,10 @@ function EnhancedTableHead(props) {
             </TableSortLabel>
           </TableCell>
         ))}
+
+        <TableCell>
+          Modify
+        </TableCell>
 
       </TableRow>
     </TableHead>
@@ -231,11 +236,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({summaryForm,formnav,loading,data,onDeleteFrom}) {
+export default function EnhancedTable({summaryForm,formnav,loading,data,onDeleteFrom,modifyHooker,modifiedData}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
+  const [modified, setModified] = React.useState(-1);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -244,7 +250,6 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
     onDeleteFrom(selected);
     setSelected([]);
   } 
-
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -261,11 +266,11 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -276,9 +281,24 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
         selected.slice(selectedIndex + 1),
       );
     }
-    
+
     setSelected(newSelected);
   };
+
+  const handleModifyClick = (event,id)=>{
+    let newSelected = [];
+    if(modified !== id){
+      setModified(id);
+      modifyHooker(data.filter(obj => {
+        return obj.id === id
+      }));
+      newSelected = [id];
+    } else {
+      setModified(-1);
+      modifyHooker({});
+    }
+    setSelected(newSelected);
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -319,6 +339,7 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
                     size={dense ? 'small' : 'medium'}
                     aria-label="enhanced table"
                 >
+
                     <EnhancedTableHead
                     classes={classes}
                     numSelected={selected.length}
@@ -330,6 +351,7 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
                     summaryForm={summaryForm}
                     formnav={formnav}
                     />
+
                     <TableBody>
                     {stableSort(data, getComparator(order, orderBy))
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -340,7 +362,6 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
 
                             <TableRow
                             hover
-                            onClick={(event) => handleClick(event, row.id)}
                             role="checkbox"
                             aria-checked={isItemSelected}
                             tabIndex={-1}
@@ -351,11 +372,13 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
                             <TableCell padding="checkbox">
                                 <Checkbox
                                 checked={isItemSelected}
+                                onClick={(event) => handleClick(event, row.id)}
                                 inputProps={{ 'aria-labelledby': labelId }}
                                 />
                             </TableCell>
 
-                        
+                          {/* row */}
+
                             {Object.keys(row).map((item,i) => { 
                                 if(item==='id'){
                                     return(<TableCell component="th" key={row.id + item} id={labelId} scope="row">{row.id}</TableCell>)
@@ -364,11 +387,13 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
                                 }
                             })}
 
-                            {/* <TableCell component="th" id={labelId} scope="row" padding="none">
-                                {row.id}
-                            </TableCell>
-                            <TableCell align="right">{row.sku}</TableCell>
-                            <TableCell align="right">{row.stock}</TableCell> */}
+                          <TableCell>
+                            <IconButton aria-label="modify" onClick={(event) => handleModifyClick(event,row.id)} >
+                              <BorderColorIcon 
+                              checked={isItemSelected}
+                              />
+                            </IconButton>
+                          </TableCell>
 
                             </TableRow>
                         );

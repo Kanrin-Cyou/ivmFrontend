@@ -24,8 +24,8 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
-import InputForm from '../form/form';
 
+import InputForm from '../form/form';
 import ListGroup from '../listgroup/listgroup';
 
 const drawerWidth = 240;
@@ -136,6 +136,7 @@ export default function MiniDrawer(props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [openFolder, setFolderOpen] = React.useState(false);
+  const [modifiedData,setModifiedData] = React.useState({});
 
   const summaryList = [
     ["Customer","customer"],
@@ -275,13 +276,19 @@ export default function MiniDrawer(props) {
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <InputForm formnav={props.formnav} summaryForm={props.summaryForm} onFormSubmit={props.handleInputChange}/>
+        <InputForm 
+          formnav={props.formnav} 
+          summaryForm={props.summaryForm} 
+          onFormSubmit={props.handleInputChange}
+          modifiedData={modifiedData}/>
         <ListGroup 
           loading={props.loading} 
           data={props.data ? props.data : ' '}
           summaryForm={props.summaryForm}
           formnav={props.formnav}
           onDeleteFrom={props.onDeleteFrom}
+          modifyHooker={setModifiedData}
+          modifiedData={modifiedData}
         />
       </main>
 
