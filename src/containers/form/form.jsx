@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -18,9 +18,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FormPropsTextFields(props) {
 
+  useEffect(() => {
+    if(props.modifiedData[0]){
+      changeModify(props.modifiedData[0]);
+      props.modifyHooker({});
+    }
+  });
+
   const classes = useStyles();
   const [state, setState] = React.useState({});
-
   const changeHandler = (e) => {
     setState((prev) => ({
      ...prev,
@@ -28,13 +34,22 @@ export default function FormPropsTextFields(props) {
     }))
   }; 
 
+  const changeModify = (modifydata) => {
+    setState(modifydata);
+  } 
+
   const changeSubmit = () => {
     props.onFormSubmit(state);
     setState({});
   }
 
-  const formGenerator = (whatForm,modifiedData) => {
-      const formComponent = whatForm.map((item,i)=>{
+  const changeUpdate = () => {
+    props.onFormUpdate(state);
+    setState({});
+  }
+
+  const formGenerator = (whatForm) => {
+      const formComponent = whatForm.map((item,i) => {
           if (item.includes("id")){
           }
           else if (item.includes("time")){
@@ -43,16 +58,16 @@ export default function FormPropsTextFields(props) {
                 key={i}
                 label={item}
                 name={item}
-                value={modifiedData[0]? modifiedData[0][item] : state[item] || ''}
+                value={state[item] || ''}
                 variant="outlined"
                 type="datetime-local"
                 className={classes.textField}
                 InputLabelProps={{shrink: true}}
                 onChange={changeHandler}/>)
           } else if (item.includes("stock")){
-            return (<TextField key={i} id="outlined-number" label={item} name={item} type="number" value={modifiedData[0]? modifiedData[0][item] : state[item] || ''} variant="outlined"  onChange={changeHandler}/>)
+            return (<TextField key={i} id="outlined-number" label={item} name={item} type="number" value={state[item] || ''} variant="outlined"  onChange={changeHandler}/>)
           } else {
-            return (<TextField key={i}  id={item} label={item} name={item} value={modifiedData[0]? modifiedData[0][item] : state[item] || ''} variant="outlined" onChange={changeHandler}/>)
+            return (<TextField key={i}  id={item} label={item} name={item} value={state[item] || ''} variant="outlined" onChange={changeHandler}/>)
           }
       }) 
  
@@ -63,7 +78,7 @@ export default function FormPropsTextFields(props) {
                 variant="contained"
                 color="default"
                 className={classes.button}
-                onClick = {changeSubmit}
+                onClick = {changeUpdate}
                 startIcon={<CloudUploadIcon />}
               >
                 Upload
@@ -82,11 +97,11 @@ export default function FormPropsTextFields(props) {
 
   const formdisplay = () => {
       if (props.summaryForm.hasOwnProperty(props.formnav)){
-        return formGenerator(props.summaryForm[props.formnav],props.modifiedData)
+        return formGenerator(props.summaryForm[props.formnav])
       } else {
-        return formGenerator(props.summaryForm["inventory"],props.modifiedData)
+        return formGenerator(props.summaryForm["inventory"])
       }
-    }
+  }
 
   return formdisplay();
 }

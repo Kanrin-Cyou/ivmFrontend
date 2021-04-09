@@ -280,7 +280,9 @@ export default function MiniDrawer(props) {
           formnav={props.formnav} 
           summaryForm={props.summaryForm} 
           onFormSubmit={props.handleInputChange}
-          modifiedData={modifiedData}/>
+          onFormUpdate={props.handleInputUpdate}
+          modifiedData={modifiedData}
+          modifyHooker={setModifiedData}/>
         <ListGroup 
           loading={props.loading} 
           data={props.data ? props.data : ' '}
