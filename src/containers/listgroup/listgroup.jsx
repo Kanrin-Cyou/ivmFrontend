@@ -407,7 +407,7 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
                 </Table>
                 </TableContainer>
                 <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
+                rowsPerPageOptions={[5,10, 25]}
                 component="div"
                 count={data.length}
                 rowsPerPage={rowsPerPage}

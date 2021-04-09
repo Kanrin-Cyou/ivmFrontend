@@ -51,7 +51,7 @@ export default function FormPropsTextFields(props) {
   const formGenerator = (whatForm) => {
 
       const formComponent = whatForm.map((item,i) => {
-          if (item.includes("id")){
+          if (item.includes("id")){ return(null)
           }
           else if (item.includes("time")){
             return (<TextField

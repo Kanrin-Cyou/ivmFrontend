@@ -4,6 +4,7 @@ import Sidebar from '../../containers/sidebar/sidebar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import summaryForm from './constants';
 
+
 class Mainpage extends React.Component{
     constructor(){
         super();
@@ -11,6 +12,7 @@ class Mainpage extends React.Component{
             loading:false,
             loadingForm:false,
             searchfield:'',
+            searchSelect:'',
             sortoption:'',
             formdata:'',
             formnav:'inventory'
@@ -27,6 +29,10 @@ class Mainpage extends React.Component{
 
     onSearchChange = (event) => {
         this.setState({searchfield:event.target.value})
+    }
+
+    onSetSearchSelect = (input) => {
+        this.setState({searchSelect:input})
     }
     
     onSetFormNav = (whichform) => {
@@ -75,29 +81,6 @@ class Mainpage extends React.Component{
                     this.setState({formdata:data,loading:true,loadingForm:true})})
     }
 
-    // if (newform === ''){
-    //     fetch('http://localhost:3001/form',{
-    //         method: 'post',
-    //         headers: {'Content-Type':'application/json'},
-    //         body: JSON.stringify({
-    //            "formnav":this.state.formnav,
-    //         })})
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log(data);
-    //             this.setState({formdata:data,loading:true,loadingForm:true})})
-    // } else {
-    //     fetch('http://localhost:3001/submit',{
-    //         method: 'post',
-    //         headers: {'Content-Type':'application/json'},
-    //         body: JSON.stringify({
-    //            "formnav":this.state.formnav,
-    //            "data":newform
-    //         })})
-    //         .then(response => response.json())
-    //         .then(data => {console.log(data)})
-    // }
-
     // "this" locates where the function is called 
 
     render(){
@@ -105,9 +88,17 @@ class Mainpage extends React.Component{
     if(this.state.loading){
 
         const filterThings = this.state.formdata.filter(formdata => {
-            console.log(formdata)
-            return formdata.sku.toLowerCase().includes(this.state.searchfield.toLowerCase())
+            let selector = this.state.searchSelect;
+            if(formdata[selector]){
+                return formdata[selector].toLowerCase().includes(this.state.searchfield.toLowerCase())
+            } else {
+                return formdata
+            }
         });
+
+        // const filterThings = this.state.formdata.filter(formdata => {
+        //     return formdata.sku.toLowerCase().includes(this.state.searchfield.toLowerCase())
+        // });
         
 
         return(
@@ -115,6 +106,7 @@ class Mainpage extends React.Component{
                 <Sidebar 
                 onRouteChange={this.props.onRouteChange} 
                 onSearchChange={this.onSearchChange}
+                onSetSearchSelect={this.onSetSearchSelect}
                 loading={this.state.loading} 
                 data={filterThings}
                 onSetFormNav={this.onSetFormNav}
