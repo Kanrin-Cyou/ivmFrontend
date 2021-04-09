@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect} from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -49,6 +49,7 @@ export default function FormPropsTextFields(props) {
   }
 
   const formGenerator = (whatForm) => {
+
       const formComponent = whatForm.map((item,i) => {
           if (item.includes("id")){
           }
@@ -69,7 +70,7 @@ export default function FormPropsTextFields(props) {
           } else {
             return (<TextField key={i}  id={item} label={item} name={item} value={state[item] || ''} variant="outlined" onChange={changeHandler}/>)
           }
-      }) 
+      })
  
     return (
       <form className={classes.root} noValidate autoComplete="off" >
@@ -78,7 +79,7 @@ export default function FormPropsTextFields(props) {
                 variant="contained"
                 color="default"
                 className={classes.button}
-                onClick = {changeUpdate}
+                onClick = {changeSubmit}
                 startIcon={<CloudUploadIcon />}
               >
                 Upload
@@ -88,9 +89,10 @@ export default function FormPropsTextFields(props) {
               variant="contained"
               color="default"
               className={classes.button}
+              onClick = {changeUpdate}
               startIcon={<CloudUploadIcon />}
             >
-              Modify
+                Modify
             </Button>
       </form>
     )}

@@ -3,7 +3,6 @@ import './mainpage.style.scss';
 import Sidebar from '../../containers/sidebar/sidebar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import summaryForm from './constants';
-import { columnsTotalWidthSelector } from '@material-ui/data-grid';
 
 class Mainpage extends React.Component{
     constructor(){
@@ -104,8 +103,12 @@ class Mainpage extends React.Component{
     render(){
 
     if(this.state.loading){
-        // const filterThings = this.state.formdata.filter(formdata => {
-        // return formdata.title.toLowerCase().includes(this.state.searchfield.toLowerCase())});
+
+        const filterThings = this.state.formdata.filter(formdata => {
+            console.log(formdata)
+            return formdata.sku.toLowerCase().includes(this.state.searchfield.toLowerCase())
+        });
+        
 
         return(
             <div id='mainpage'>
@@ -113,7 +116,7 @@ class Mainpage extends React.Component{
                 onRouteChange={this.props.onRouteChange} 
                 onSearchChange={this.onSearchChange}
                 loading={this.state.loading} 
-                data={this.state.formdata}
+                data={filterThings}
                 onSetFormNav={this.onSetFormNav}
                 formnav={this.state.formnav}
                 summaryForm={summaryForm}
@@ -125,7 +128,7 @@ class Mainpage extends React.Component{
         );
     } else {
         return(
-            <div id='mainpage'>
+            <div id='mainpagerocessing'>
                 <CircularProgress/>
             </div>
         )
