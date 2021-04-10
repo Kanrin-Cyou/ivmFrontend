@@ -145,17 +145,18 @@ class Signin extends React.Component{
                 password: this.state.signInPassword
             })
         }).then(response => response.json()).then(user => {
-            // if (user.id) {
+            if (user.id) {
                 console.log(user)
                 this.props.loadUser(user);
                 this.props.onRouteChange('home');
-            // } 
+            } 
         })
     }
 
     render(){
         return(
             <SignIn 
+            className={"SignIn"}
             onEmailChange={this.onEmailChange}
             onPasswordChange={this.onPasswordChange}
             onSubmitSignIn={this.onSubmitSignIn}/>

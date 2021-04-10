@@ -36,6 +36,7 @@ class Mainpage extends React.Component{
     }
     
     onSetFormNav = (whichform) => {
+        if(this.state.searchSelect!==''){this.setState({searchSelect:''})}
         this.setState({loadingForm:false,formnav:whichform});
     }
 
@@ -95,11 +96,6 @@ class Mainpage extends React.Component{
                 return formdata
             }
         });
-
-        // const filterThings = this.state.formdata.filter(formdata => {
-        //     return formdata.sku.toLowerCase().includes(this.state.searchfield.toLowerCase())
-        // });
-        
 
         return(
             <div id='mainpage'>

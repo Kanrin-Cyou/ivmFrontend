@@ -169,6 +169,7 @@ export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [openForm, setOpenForm] = React.useState('');
   const [modifiedData,setModifiedData] = React.useState({});
 
   const summaryList = [
@@ -195,7 +196,6 @@ export default function MiniDrawer(props) {
 
   const formGenerator = (whatForm) => {
     const formComponent = whatForm.map((item,i) => { 
-      console.log()
       return(
       <ListItem key={i} button className={classes.nested} onClick={()=>props.onSetFormNav(item[1])}>
                 <ListItemIcon>
@@ -319,21 +319,25 @@ export default function MiniDrawer(props) {
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <InputForm 
+        {openForm!=='' ? (<InputForm 
           formnav={props.formnav} 
           summaryForm={props.summaryForm} 
           onFormSubmit={props.handleInputChange}
           onFormUpdate={props.handleInputUpdate}
           modifiedData={modifiedData}
-          modifyHooker={setModifiedData}/>
+          openForm = {openForm}
+          modifyHooker={setModifiedData}/>)
+        : (null)}
+
         <ListGroup 
           loading={props.loading} 
           data={props.data ? props.data : ' '}
           summaryForm={props.summaryForm}
           formnav={props.formnav}
+          setOpenForm={setOpenForm}
+          openForm = {openForm}
           onDeleteFrom={props.onDeleteFrom}
           modifyHooker={setModifiedData}
-          modifiedData={modifiedData}
         />
       </main>
 

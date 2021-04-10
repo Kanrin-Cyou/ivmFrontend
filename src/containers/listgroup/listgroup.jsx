@@ -1,43 +1,3 @@
-// import React from 'react';
-// import { DataGrid } from '@material-ui/data-grid';
-
-// const ListGroup = ({summaryForm,formnav,loading,data}) => {
-
-//     const columns = () => {
-//         const listtitle = [];
-//         summaryForm[formnav].map((item,i) => {
-//             return listtitle.push({
-//                             field: item,
-//                             headerName: item,
-//                             })
-//         })
-//         return listtitle
-//     }
-
-//     return(
-//             <div>
-            
-//                 {!loading && (
-//                     <div>
-//                         <h1>Result Not Fetched</h1>
-//                     </div>
-//                 )}
-
-//                 {loading && (
-//                     <div style={{ height: "80vh", width: '100%' }}>
-//                         <DataGrid sortModel={() => (typeof data)}
-//                                   rows={data} 
-//                                   columns={columns()} 
-//                                   pageSize={10} 
-//                                   checkboxSelection/>
-//                     </div>
-//                 )}
-//             </div>
-//         )
-// }
-
-// export default ListGroup;
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -59,8 +19,52 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+  },
+  paper: {
+    width: '100%',
+    marginBottom: theme.spacing(2),
+  },
+  table: {
+    minWidth: 750,
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: 'rect(0 0 0 0)',
+    height: 1,
+    margin: -1,
+    overflow: 'hidden',
+    padding: 0,
+    position: 'absolute',
+    top: 20,
+    width: 1,
+  },
+}));
+
+const useToolbarStyles = makeStyles((theme) => ({
+  root: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(1),
+  },
+  highlight:
+    theme.palette.type === 'light'
+      ? {
+          color: theme.palette.secondary.main,
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+        }
+      : {
+          color: theme.palette.text.primary,
+          backgroundColor: theme.palette.secondary.dark,
+        },
+  title: {
+    flex: '1 1 100%',
+  },
+}));
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -96,9 +100,7 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-
       <TableRow>
-        
         <TableCell padding="checkbox">
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -107,11 +109,10 @@ function EnhancedTableHead(props) {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell>
-
         {summaryForm[formnav].map((headCell) => (
           <TableCell
             key={headCell}
-            align={headCell === 'quantity' ? 'right' : 'left'}
+            // align={headCell === 'quantity' ? 'right' : 'left'}
             padding={'default'}
             sortDirection={orderBy === headCell ? order : false}
           >
@@ -130,10 +131,6 @@ function EnhancedTableHead(props) {
           </TableCell>
         ))}
 
-        <TableCell>
-          Modify
-        </TableCell>
-
       </TableRow>
     </TableHead>
   );
@@ -149,31 +146,20 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: '1 1 100%',
-  },
-}));
-
-
+const SummaryList = {
+    customer:"Customer",
+    supplyer:"Supplyer",
+    goods:"Goods",
+    inventory:"Inventory",
+    imports:"Imports",
+    importsreturn:"Imports Return",
+    sales:"Sales",
+    salesreturn:"Sales Return"
+}
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected,formnav,deleteSubmit } = props;
+  const { numSelected,formnav,deleteSubmit,setOpenForm,openForm } = props;
 
   return (
     <Toolbar
@@ -187,9 +173,17 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          {formnav}
+          {SummaryList[formnav]}
         </Typography>
       )}
+
+      {numSelected === 1 ? (
+        <Tooltip title="modify">
+          <IconButton aria-label="modify" onClick={(event) => {openForm===''?setOpenForm('modify'):setOpenForm('')}}>
+            <BorderColorIcon />
+          </IconButton>
+        </Tooltip>
+      ) : (null)}  
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
@@ -198,12 +192,14 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+      <Tooltip title="add">
+        <IconButton aria-label="add" onClick={(event) => {openForm===''?setOpenForm('add'):setOpenForm('')}}>
+          <AddBoxIcon/>
+        </IconButton>
+      </Tooltip>
+      )
+    }
+
     </Toolbar>
   );
 };
@@ -212,39 +208,14 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-  },
-  paper: {
-    width: '100%',
-    marginBottom: theme.spacing(2),
-  },
-  table: {
-    minWidth: 750,
-  },
-  visuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: -1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1,
-  },
-}));
-
-export default function EnhancedTable({summaryForm,formnav,loading,data,onDeleteFrom,modifyHooker,modifiedData}) {
+export default function EnhancedTable({summaryForm,formnav,loading,data,onDeleteFrom,modifyHooker,setOpenForm,openForm}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
-  const [modified, setModified] = React.useState(-1);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const deleteSubmit = () => {
     onDeleteFrom(selected);
@@ -268,6 +239,15 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
 
   const handleClick = (event, id) => {
     const selectedIndex = selected.indexOf(id);
+
+    if(selected.length === 0){
+      setOpenForm('');
+      modifyHooker(data.filter(obj => obj.id === id)) 
+    } else {
+      modifyHooker({});
+      setOpenForm('');
+    }
+
     let newSelected = [];
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
@@ -281,25 +261,8 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
         selected.slice(selectedIndex + 1),
       );
     }
-
-    setSelected(newSelected);
+    setSelected(newSelected)
   };
-
-  const handleModifyClick = (event,id)=>{
-    let newSelected = [];
-    if(modified !== id){
-      setModified(id);
-      modifyHooker(data.filter(obj => {
-        return obj.id === id
-      }));
-      newSelected = [id];
-    } else {
-      setModified(-1);
-      modifyHooker({});
-    }
-    setSelected(newSelected);
-  }
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -331,7 +294,15 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
             <div className={classes.root}>
                 
             <Paper className={classes.paper}>
-                <EnhancedTableToolbar numSelected={selected.length} formnav={formnav} deleteSubmit={deleteSubmit}/>
+                <EnhancedTableToolbar 
+                numSelected={selected.length} 
+                formnav={formnav} 
+                deleteSubmit={deleteSubmit} 
+                setOpenForm={setOpenForm} 
+                openForm={openForm}
+                />
+
+
                 <TableContainer>
                 <Table
                     className={classes.table}
@@ -372,7 +343,8 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
                             <TableCell padding="checkbox">
                                 <Checkbox
                                 checked={isItemSelected}
-                                onClick={(event) => handleClick(event, row.id)}
+                                selected={isItemSelected}
+                                onClick={(event) => handleClick(event,row.id)}
                                 inputProps={{ 'aria-labelledby': labelId }}
                                 />
                             </TableCell>
@@ -386,15 +358,6 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
                                     return(<TableCell key={row.id + item} align="left">{row[item]}</TableCell>)
                                 }
                             })}
-
-                          <TableCell>
-                            <IconButton aria-label="modify" onClick={(event) => handleModifyClick(event,row.id)} >
-                              <BorderColorIcon 
-                              checked={isItemSelected}
-                              />
-                            </IconButton>
-                          </TableCell>
-
                             </TableRow>
                         );
                         })}
@@ -407,7 +370,7 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
                 </Table>
                 </TableContainer>
                 <TablePagination
-                rowsPerPageOptions={[5,10, 25]}
+                rowsPerPageOptions={[5, 10, 25]}
                 component="div"
                 count={data.length}
                 rowsPerPage={rowsPerPage}

@@ -71,29 +71,37 @@ export default function FormPropsTextFields(props) {
             return (<TextField key={i}  id={item} label={item} name={item} value={state[item] || ''} variant="outlined" onChange={changeHandler}/>)
           }
       })
- 
-    return (
-      <form className={classes.root} noValidate autoComplete="off" >
-            {formComponent}
-            <Button
-                variant="contained"
-                color="default"
-                className={classes.button}
-                onClick = {changeSubmit}
-                startIcon={<CloudUploadIcon />}
-              >
-                Upload
-            </Button>
 
-            <Button
+      const addButton = () => {
+        if(props.openForm==='add'){
+            return(
+              <Button
+                  variant="contained"
+                  color="default"
+                  className={classes.button}
+                  onClick = {changeSubmit}
+                  startIcon={<CloudUploadIcon />}
+                >
+                    Add
+                </Button>
+            )
+        } else {
+            return(<Button
               variant="contained"
               color="default"
               className={classes.button}
               onClick = {changeUpdate}
               startIcon={<CloudUploadIcon />}
-            >
+              >
                 Modify
-            </Button>
+              </Button>)
+        }
+    }    
+ 
+    return (
+      <form className={classes.root} noValidate autoComplete="off" >
+            {formComponent}
+            {addButton()}    
       </form>
     )}
 

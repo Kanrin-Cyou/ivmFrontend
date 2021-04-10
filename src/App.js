@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-// import Signin from './pages/signin/signin';
+import Signin from './pages/signin/signin';
 import Mainpage from './pages/mainpage/mainpage';
 
 class App extends Component{
@@ -48,11 +48,11 @@ class App extends Component{
   render(){
     return(
       <div className="app">
-        <Mainpage className='Mainpage' onRouteChange={this.onRouteChange}/>
-        {/* {this.state.route === 'home'
+        {/* <Mainpage className='Mainpage' onRouteChange={this.onRouteChange}/> */}
+        {this.state.route === 'home'
           ? <Mainpage className='Mainpage' onRouteChange={this.onRouteChange}/>
           : <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
-        } */}
+        }
       </div>
     )
   }
