@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const useStyles = makeStyles((theme) => ({
@@ -10,8 +11,9 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: '25ch',
     },
+
     button: {
-      margin: theme.spacing(1),
+      margin: theme.spacing(2),
     },
   },
 }));
@@ -77,7 +79,7 @@ export default function FormPropsTextFields(props) {
             return(
               <Button
                   variant="contained"
-                  color="default"
+                  color="primary"
                   className={classes.button}
                   onClick = {changeSubmit}
                   startIcon={<CloudUploadIcon />}
@@ -88,7 +90,7 @@ export default function FormPropsTextFields(props) {
         } else {
             return(<Button
               variant="contained"
-              color="default"
+              color="primary"
               className={classes.button}
               onClick = {changeUpdate}
               startIcon={<CloudUploadIcon />}
@@ -99,10 +101,14 @@ export default function FormPropsTextFields(props) {
     }    
  
     return (
-      <form className={classes.root} noValidate autoComplete="off" >
+      <Box className={classes.root}
+      display="flex" 
+      alignItems="center"
+      noValidate
+      autoComplete="off" >
             {formComponent}
             {addButton()}    
-      </form>
+      </Box>
     )}
 
   const formdisplay = () => {

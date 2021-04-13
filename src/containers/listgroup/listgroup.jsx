@@ -101,18 +101,21 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
+
         <TableCell padding="checkbox">
           <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
+            indeterminate={true}
+            // {numSelected > 0 && numSelected < rowCount}
+            // checked={rowCount > 0 && numSelected === rowCount}
+            // onChange={onSelectAllClick}
+            // inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell>
+
         {summaryForm[formnav].map((headCell) => (
           <TableCell
             key={headCell}
-            // align={headCell === 'quantity' ? 'right' : 'left'}
+
             padding={'default'}
             sortDirection={orderBy === headCell ? order : false}
           >
@@ -312,15 +315,15 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
                 >
 
                     <EnhancedTableHead
-                    classes={classes}
-                    numSelected={selected.length}
-                    order={order}
-                    orderBy={orderBy}
-                    onSelectAllClick={handleSelectAllClick}
-                    onRequestSort={handleRequestSort}
-                    rowCount={data.length}
-                    summaryForm={summaryForm}
-                    formnav={formnav}
+                      classes={classes}
+                      numSelected={selected.length}
+                      order={order}
+                      orderBy={orderBy}
+                      onSelectAllClick={handleSelectAllClick}
+                      onRequestSort={handleRequestSort}
+                      rowCount={data.length}
+                      summaryForm={summaryForm}
+                      formnav={formnav}
                     />
 
                     <TableBody>
@@ -333,31 +336,31 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
 
                             <TableRow
                             hover
-                            role="checkbox"
                             aria-checked={isItemSelected}
+                            selected={isItemSelected}
                             tabIndex={-1}
                             key={row.id}
-                            selected={isItemSelected}
                             >
 
-                            <TableCell padding="checkbox">
-                                <Checkbox
-                                checked={isItemSelected}
-                                selected={isItemSelected}
-                                onClick={(event) => handleClick(event,row.id)}
-                                inputProps={{ 'aria-labelledby': labelId }}
-                                />
-                            </TableCell>
+                                <TableCell padding="checkbox">
+                                    <Checkbox
+                                    role="checkbox"
+                                    checked={isItemSelected}
+                                    selected={isItemSelected}
+                                    onClick={(event) => handleClick(event,row.id)}
+                                    inputProps={{ 'aria-labelledby': labelId }}
+                                    />
+                                </TableCell>
 
-                          {/* row */}
+                              {/* row */}
 
-                            {Object.keys(row).map((item,i) => { 
-                                if(item==='id'){
-                                    return(<TableCell component="th" key={row.id + item} id={labelId} scope="row">{row.id}</TableCell>)
-                                } else {
-                                    return(<TableCell key={row.id + item} align="left">{row[item]}</TableCell>)
-                                }
-                            })}
+                                {Object.keys(row).map((item,i) => { 
+                                    if(item==='id'){
+                                        return(<TableCell component="th" key={row.id + item} id={labelId} scope="row">{row.id}</TableCell>)
+                                    } else {
+                                        return(<TableCell key={row.id + item} align="left">{row[item]}</TableCell>)
+                                    }
+                                })}
                             </TableRow>
                         );
                         })}

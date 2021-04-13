@@ -19,7 +19,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SearchIcon from '@material-ui/icons/Search';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputForm from '../form/form';
 import ListGroup from '../listgroup/listgroup';
@@ -31,6 +30,7 @@ import MoneyOffIcon from '@material-ui/icons/MoneyOff';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 import LocalMallIcon from '@material-ui/icons/LocalMall';
+import Box from '@material-ui/core/Box';
 
 const drawerWidth = 240;
 
@@ -147,20 +147,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
-  formControl: {
-    position: 'relative',
-    width: '100%',
-    minWidth: 120,
-  },
-
-  selectEmpty: {
+  select: {
     color:"white",
+    minWidth: 120,
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
     marginRight: theme.spacing(2),
-    marginLeft: 0,
-    paddingLeft:'20px',
+    paddingLeft: 10,
   },
 
 }));
@@ -222,63 +219,64 @@ export default function MiniDrawer(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={
-          clsx(classes.appBar, {[classes.appBarShift]: open,})
-        }
-      >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, {
-                [classes.hide]: open,
-              })}
-            >
-              <MenuIcon/>
-            </IconButton>
-            
-            <Typography variant="h6" noWrap>
-              Inventory Mangagement
-            </Typography>
-
-            <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <InputBase
-                  placeholder="Search…"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                  inputProps={{ 'aria-label': 'search' }}
-                  onChange={props.onSearchChange}
-                />
-            </div>
-
-            <div>
-              <FormControl className={classes.formControl}>
-                  <Select
-                    onChange={(e)=>{props.onSetSearchSelect(e.target.value)}}
-                    defaultValue="" 
-                    className={classes.selectEmpty}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                  >
-                    {props.summaryForm[props.formnav].map((item,i) => {
-                      if(item==='id'){ return (null)
-                      } else {
-                        return (<MenuItem key={i} value={item}>{item}</MenuItem>)
-                      }
+          <AppBar
+            position="fixed"
+            className={
+              clsx(classes.appBar, {[classes.appBarShift]: open,})
+            }
+          >
+            <Toolbar>
+                  <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={handleDrawerOpen}
+                    edge="start"
+                    className={clsx(classes.menuButton, {
+                      [classes.hide]: open,
                     })}
-                  </Select>
-              </FormControl>
-            </div>
+                  >
+                    <MenuIcon/>
+                  </IconButton>
+                  
+                  <Typography variant="h6" noWrap>
+                    Inventory Mangagement
+                  </Typography>
 
-            <div className={classes.grow} />
+                  <div className={classes.search}>
+                      <div className={classes.searchIcon}>
+                        <SearchIcon />
+                      </div>
+                      <InputBase
+                        placeholder="Search…"
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputInput,
+                        }}
+                        inputProps={{ 'aria-label': 'search' }}
+                        onChange={props.onSearchChange}
+                      />
+                  </div>
+
+                  <div>
+                    <Select
+                      onChange={(e)=>{props.onSetSearchSelect(e.target.value)}}
+                      defaultValue="" 
+                      disableUnderline
+                      className={classes.select}
+                      inputProps={{ 'aria-label': 'Without label'}}
+                    >
+                      {props.summaryForm[props.formnav].map((item,i) => {
+                        if(item==='id'){return (null)
+                        } else {
+                          return (               
+                          <MenuItem key={i} value={item}>{item}</MenuItem>)
+                        }
+                      })}
+                    </Select>
+                  </div>
+
+                  <div className={classes.grow} />
+
             <div className={classes.sectionDesktop}>
               <IconButton
                 edge="end"
@@ -290,7 +288,6 @@ export default function MiniDrawer(props) {
                 <ExitToAppIcon />
               </IconButton>
             </div>
-
           </Toolbar>
       </AppBar>
 
@@ -317,28 +314,33 @@ export default function MiniDrawer(props) {
       </Drawer>
 
 
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {openForm!=='' ? (<InputForm 
-          formnav={props.formnav} 
-          summaryForm={props.summaryForm} 
-          onFormSubmit={props.handleInputChange}
-          onFormUpdate={props.handleInputUpdate}
-          modifiedData={modifiedData}
-          openForm = {openForm}
-          modifyHooker={setModifiedData}/>)
-        : (null)}
+      <main 
+      className={classes.content}
+       >
 
-        <ListGroup 
-          loading={props.loading} 
-          data={props.data ? props.data : ' '}
-          summaryForm={props.summaryForm}
-          formnav={props.formnav}
-          setOpenForm={setOpenForm}
-          openForm = {openForm}
-          onDeleteFrom={props.onDeleteFrom}
-          modifyHooker={setModifiedData}
-        />
+          <div className={classes.toolbar} />
+            <Box>
+              {openForm!=='' ? (<InputForm 
+                formnav={props.formnav} 
+                summaryForm={props.summaryForm} 
+                onFormSubmit={props.handleInputChange}
+                onFormUpdate={props.handleInputUpdate}
+                modifiedData={modifiedData}
+                openForm = {openForm}
+                modifyHooker={setModifiedData}/>)
+              : (null)}
+
+              <ListGroup 
+                loading={props.loading} 
+                data={props.data ? props.data : ' '}
+                summaryForm={props.summaryForm}
+                formnav={props.formnav}
+                setOpenForm={setOpenForm}
+                openForm = {openForm}
+                onDeleteFrom={props.onDeleteFrom}
+                modifyHooker={setModifiedData}
+              />
+            </Box>
       </main>
 
     </div>
