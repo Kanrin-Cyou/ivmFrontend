@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-// import Signin from './pages/signin/signin';
+import Signin from './pages/signin/signin';
 import Mainpage from './pages/mainpage/mainpage';
 
 class App extends Component{
@@ -14,8 +14,8 @@ class App extends Component{
         id:'',
         name: '',
         email:'',
-        entries: 0,
-        joined: ''
+        joined: '',
+        avatar:'',
       }
     }
   }
@@ -25,8 +25,8 @@ class App extends Component{
       id:data.id,
       name: data.name,
       email: data.email,
-      entries: data.entries,
-      joined: data.joined
+      joined: data.joined,
+      avatar: data.avatar,
     }})
   }
 
@@ -45,14 +45,18 @@ class App extends Component{
     this.setState({route:route});
   }
 
+
+
   render(){
+
     return(
       <div className="app">
-        <Mainpage className='Mainpage' onRouteChange={this.onRouteChange}/>
-        {/* {this.state.route === 'home'
-          ? <Mainpage className='Mainpage' onRouteChange={this.onRouteChange}/>
+
+        {/* <Mainpage className='Mainpage' onRouteChange={this.onRouteChange}/> */}
+        {this.state.route === 'home'
+          ? <Mainpage className='Mainpage' loadUser={this.loadUser} user={this.state.user} onRouteChange={this.onRouteChange}/>
           : <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
-        } */}
+        }
       </div>
     )
   }

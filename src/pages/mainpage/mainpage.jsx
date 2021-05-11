@@ -1,8 +1,10 @@
 import React from 'react';
 import './mainpage.style.scss';
-import Sidebar from '../../containers/sidebar/sidebar';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import summaryForm from './constants';
+import Modal from '../../components/modal/modal';
+import Profile2 from '../../components/profile/profile2'
+import Sidebar from '../../components/sidebar/sidebar';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 class Mainpage extends React.Component{
@@ -15,7 +17,8 @@ class Mainpage extends React.Component{
             searchSelect:'',
             sortoption:'',
             formdata:'',
-            formnav:'inventory'
+            formnav:'inventory',
+            isProfileOpen:false,
         }
     }
     
@@ -39,6 +42,15 @@ class Mainpage extends React.Component{
         if(this.state.searchSelect!==''){this.setState({searchSelect:''})}
         this.setState({loadingForm:false,formnav:whichform});
     }
+
+    toggleModal = () => {
+        this.setState(prevState => ({
+          ...prevState,
+          isProfileOpen: !prevState.isProfileOpen
+        }))
+    }
+
+    
 
     onSubmitForm = (newform = '') => {
             fetch('http://localhost:3001/form',{
@@ -87,7 +99,7 @@ class Mainpage extends React.Component{
     render(){
 
     if(this.state.loading){
-
+        const isProfileOpen = this.state.isProfileOpen;
         const filterThings = this.state.formdata.filter(formdata => {
             let selector = this.state.searchSelect;
             if(formdata[selector]){
@@ -98,7 +110,14 @@ class Mainpage extends React.Component{
         });
 
         return(
+
             <div id='mainpage'>
+ 
+                {isProfileOpen &&         
+                    <Modal>
+                        <Profile2 isProfileOpen={isProfileOpen} user={this.props.user} loadUser={this.props.loadUser} toggleModal={this.toggleModal}/>
+                    </Modal>
+                }
                 <Sidebar 
                 onRouteChange={this.props.onRouteChange} 
                 onSearchChange={this.onSearchChange}
@@ -111,6 +130,8 @@ class Mainpage extends React.Component{
                 handleInputChange={this.onSubmitForm}
                 handleInputUpdate={this.onModifyFrom}
                 onDeleteFrom={this.onDeleteFrom}
+                toggleModal={this.toggleModal}
+                user = {this.props.user}
                 />
             </div>
         );

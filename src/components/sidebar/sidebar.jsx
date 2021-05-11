@@ -1,27 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
-import { fade,makeStyles,useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+import InputForm from '../form/form';
+import ListGroup from '../listgroup/listgroup';
+import Profile from '../profile/profile';
+import { fade,makeStyles,useTheme,Drawer,AppBar,Toolbar,List,CssBaseline,Typography,InputBase,Divider,IconButton,ListItem,ListItemIcon,ListItemText,MenuItem,Select,Box } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import SearchIcon from '@material-ui/icons/Search';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputForm from '../form/form';
-import ListGroup from '../listgroup/listgroup';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import AssignmentReturnIcon from '@material-ui/icons/AssignmentReturn';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
@@ -30,7 +16,6 @@ import MoneyOffIcon from '@material-ui/icons/MoneyOff';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 import LocalMallIcon from '@material-ui/icons/LocalMall';
-import Box from '@material-ui/core/Box';
 
 const drawerWidth = 240;
 
@@ -160,6 +145,10 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 10,
   },
 
+  profile:{
+    flexGrow:-1,
+  }
+
 }));
 
 export default function MiniDrawer(props) {
@@ -219,6 +208,7 @@ export default function MiniDrawer(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
+
           <AppBar
             position="fixed"
             className={
@@ -275,19 +265,8 @@ export default function MiniDrawer(props) {
                     </Select>
                   </div>
 
-                  <div className={classes.grow} />
 
-            <div className={classes.sectionDesktop}>
-              <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-haspopup="true"
-                onClick={props.onRouteChange}
-                color="inherit"
-              >
-                <ExitToAppIcon />
-              </IconButton>
-            </div>
+                  <Profile className={classes.Profile} user={props.user} Signout={props.onRouteChange} toggleModal={props.toggleModal}/>
           </Toolbar>
       </AppBar>
 
@@ -314,10 +293,7 @@ export default function MiniDrawer(props) {
       </Drawer>
 
 
-      <main 
-      className={classes.content}
-       >
-
+      <main className={classes.content}>
           <div className={classes.toolbar} />
             <Box>
               {openForm!=='' ? (<InputForm 

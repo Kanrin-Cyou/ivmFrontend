@@ -8,3 +8,9 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
+// ReactDOM.render(
+//   <Modal />,
+// document.getElementById('root')
+// );
+
+
