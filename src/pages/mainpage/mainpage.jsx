@@ -7,6 +7,8 @@ import Sidebar from '../../components/sidebar/sidebar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 
+const hostAddress = 'http://localhost:3001';
+
 class Mainpage extends React.Component{
     constructor(){
         super();
@@ -23,7 +25,7 @@ class Mainpage extends React.Component{
     }
     
     componentDidMount(){
-        this.onSubmitForm();
+        this.handlePost('','/form');
     }
 
     componentDidUpdate(){
@@ -50,15 +52,18 @@ class Mainpage extends React.Component{
         }))
     }
 
-    
-
-    onSubmitForm = (newform = '') => {
-            fetch('http://localhost:3001/form',{
+    handlePost = (datalist=[''],nav) => {
+        //3 Nav 
+        //'/form'
+        //'/deletelist'
+        //'/modifylist'
+            let address = hostAddress + nav;
+            fetch(address,{
                 method: 'post',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({
                    "formnav":this.state.formnav,
-                   "data":newform
+                   "datalist":datalist
                 })})
                 .then(response => response.json())
                 .then(data => {
@@ -66,33 +71,6 @@ class Mainpage extends React.Component{
                     this.setState({formdata:data,loading:true,loadingForm:true})})
         }
 
-    onDeleteFrom = (deletelist = ['']) => {
-        fetch('http://localhost:3001/deletelist',{
-                method: 'post',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify({
-                   "formnav":this.state.formnav,
-                   "deletelist":deletelist
-                })})
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    this.setState({formdata:data,loading:true,loadingForm:true})})
-    }
-
-    onModifyFrom = (modifyform = ['']) => {
-        fetch('http://localhost:3001/modifylist',{
-                method: 'post',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify({
-                   "formnav":this.state.formnav,
-                   "modifyform":modifyform
-                })})
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    this.setState({formdata:data,loading:true,loadingForm:true})})
-    }
 
     // "this" locates where the function is called 
 
@@ -119,19 +97,17 @@ class Mainpage extends React.Component{
                     </Modal>
                 }
                 <Sidebar 
-                onRouteChange={this.props.onRouteChange} 
-                onSearchChange={this.onSearchChange}
-                onSetSearchSelect={this.onSetSearchSelect}
-                loading={this.state.loading} 
-                data={filterThings}
-                onSetFormNav={this.onSetFormNav}
-                formnav={this.state.formnav}
-                summaryForm={summaryForm}
-                handleInputChange={this.onSubmitForm}
-                handleInputUpdate={this.onModifyFrom}
-                onDeleteFrom={this.onDeleteFrom}
-                toggleModal={this.toggleModal}
-                user = {this.props.user}
+                    onRouteChange={this.props.onRouteChange} 
+                    onSearchChange={this.onSearchChange}
+                    onSetSearchSelect={this.onSetSearchSelect}
+                    loading={this.state.loading} 
+                    data={filterThings}
+                    onSetFormNav={this.onSetFormNav}
+                    formnav={this.state.formnav}
+                    summaryForm={summaryForm}   
+                    handlePost = {this.handlePost}
+                    toggleModal={this.toggleModal}
+                    user = {this.props.user}
                 />
             </div>
         );

@@ -38,12 +38,12 @@ export default function FormPropsTextFields(props) {
   } 
 
   const changeSubmit = () => {
-    props.onFormSubmit(state);
+    props.handlePost(state,'/form');
     setState({});
   }
 
   const changeUpdate = () => {
-    props.onFormUpdate(state);
+    props.handlePost(state,'/modifylist');
     setState({});
   }
 

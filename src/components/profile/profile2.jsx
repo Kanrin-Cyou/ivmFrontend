@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 function ProfileUpdate(props) {
     const classes = useStyles();
     return (
-        <Paper elevation={3} component="main" maxWidth="xs">
+        <Paper elevation={3} component="main">
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.large} alt={props.user.name} src={props.user.avatar} aria-controls="profile-menu" aria-haspopup="true"/>

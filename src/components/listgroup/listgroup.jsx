@@ -77,7 +77,7 @@ function stableSort(array, comparator) {
 }
 
 function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort,summaryForm,formnav} = props;
+  const { classes, order, orderBy,onRequestSort,summaryForm,formnav} = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -195,7 +195,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({summaryForm,formnav,loading,data,onDeleteFrom,modifyHooker,setOpenForm,openForm}) {
+export default function EnhancedTable({summaryForm,formnav,loading,data,handlePost,modifyHooker,setOpenForm,openForm}) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -205,7 +205,7 @@ export default function EnhancedTable({summaryForm,formnav,loading,data,onDelete
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const deleteSubmit = () => {
-    onDeleteFrom(selected);
+    handlePost(selected,'/deletelist');
     setSelected([]);
   } 
 

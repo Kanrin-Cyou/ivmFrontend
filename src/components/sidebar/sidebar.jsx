@@ -299,8 +299,7 @@ export default function MiniDrawer(props) {
               {openForm!=='' ? (<InputForm 
                 formnav={props.formnav} 
                 summaryForm={props.summaryForm} 
-                onFormSubmit={props.handleInputChange}
-                onFormUpdate={props.handleInputUpdate}
+                handlePost = {props.handlePost}
                 modifiedData={modifiedData}
                 openForm = {openForm}
                 modifyHooker={setModifiedData}/>)
@@ -313,7 +312,7 @@ export default function MiniDrawer(props) {
                 formnav={props.formnav}
                 setOpenForm={setOpenForm}
                 openForm = {openForm}
-                onDeleteFrom={props.onDeleteFrom}
+                handlePost = {props.handlePost}
                 modifyHooker={setModifiedData}
               />
             </Box>
