@@ -88,7 +88,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-
         <TableCell padding="checkbox">
           <Checkbox
             indeterminate={true}

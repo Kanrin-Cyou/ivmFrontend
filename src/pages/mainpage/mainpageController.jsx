@@ -5,7 +5,7 @@ import Profile from '../../components/profile/profile'
 import ViewController from './mainpageViewController';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const hostAddress = 'http://localhost:3001';
+const hostAddress = 'https://boiling-oasis-88028.herokuapp.com';
 
 class Mainpage extends React.Component{
     constructor(){
