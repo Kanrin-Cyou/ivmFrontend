@@ -1,3 +1,5 @@
+// MARK - the constant used for sending SQL command
+
 const customer =['id','name','postal','address','telephone','contact_person','contact_person_phone','bank','bank_account','email','fax','status'];
 const supplyer =['id','name','postal','address','telephone','contact_person','contact_person_phone','bank','bank_account','email','fax','status'];
 
@@ -9,7 +11,7 @@ const salesreturn =['id','customer_id','payment_type','time','operator','quantit
 const goods =['id','name','origin','standard','package','batch','approval','note','price','supplyer_id','status'];
 const inventory =['id','sku','stock'];
 
-const summaryForm = {
+const sqlList = {
      'customer':customer,
      'imports':imports,
      'importsreturn':importsreturn,
@@ -20,4 +22,4 @@ const summaryForm = {
      'inventory':inventory
 }
 
-export default summaryForm;
+export default sqlList;

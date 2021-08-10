@@ -5,6 +5,7 @@ import { lighten, makeStyles,Table,TableBody,TableCell,TableContainer,TableHead,
 import DeleteIcon from '@material-ui/icons/Delete';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import displayConstant from '../../pages/mainpage/displayConstant.js'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,6 +51,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
+// MARK: - Descending Order
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -76,6 +78,7 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+
 function EnhancedTableHead(props) {
   const { classes, order, orderBy,onRequestSort,summaryForm,formnav} = props;
   const createSortHandler = (property) => (event) => {
@@ -96,10 +99,9 @@ function EnhancedTableHead(props) {
           />
         </TableCell>
 
-        {summaryForm[formnav].map((headCell) => (
+        {displayConstant[formnav].map((headCell) => (
           <TableCell
             key={headCell}
-
             padding={'default'}
             sortDirection={orderBy === headCell ? order : false}
           >

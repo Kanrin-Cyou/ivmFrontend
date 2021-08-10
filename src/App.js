@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Signin from './pages/signin/signin';
-import Mainpage from './pages/mainpage/mainpage';
+import Mainpage from './pages/mainpage/mainpageController';
 
 class App extends Component{
   constructor(){
@@ -45,13 +45,10 @@ class App extends Component{
     this.setState({route:route});
   }
 
-
-
   render(){
 
     return(
       <div className="app">
-
         {/* <Mainpage className='Mainpage' onRouteChange={this.onRouteChange}/> */}
         {this.state.route === 'home'
           ? <Mainpage className='Mainpage' loadUser={this.loadUser} user={this.state.user} onRouteChange={this.onRouteChange}/>

@@ -1,11 +1,9 @@
 import React from 'react';
-import './mainpage.style.scss';
-import summaryForm from './constants';
+import './mainpageController.style.scss';
 import Modal from '../../components/modal/modal';
-import Profile2 from '../../components/profile/profile2'
-import Sidebar from '../../components/sidebar/sidebar';
+import Profile from '../../components/profile/profile'
+import ViewController from './mainpageViewController';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
 
 const hostAddress = 'http://localhost:3001';
 
@@ -29,7 +27,7 @@ class Mainpage extends React.Component{
     }
 
     componentDidUpdate(){
-        if(!this.state.loadingForm){this.onSubmitForm()};
+        if(!this.state.loadingForm){this.handlePost('','/form')};
     }
 
     onSearchChange = (event) => {
@@ -53,25 +51,19 @@ class Mainpage extends React.Component{
     }
 
     handlePost = (datalist=[''],nav) => {
-        //3 Nav 
-        //'/form'
-        //'/deletelist'
-        //'/modifylist'
-            let address = hostAddress + nav;
-            fetch(address,{
-                method: 'post',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify({
-                   "formnav":this.state.formnav,
-                   "datalist":datalist
-                })})
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    this.setState({formdata:data,loading:true,loadingForm:true})})
-        }
-
-
+        let address = hostAddress + nav;
+        fetch(address,{
+            method: 'post',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                "formnav":this.state.formnav,
+                "datalist":datalist
+            })})
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                this.setState({formdata:data,loading:true,loadingForm:true})})
+    }
     // "this" locates where the function is called 
 
     render(){
@@ -93,18 +85,17 @@ class Mainpage extends React.Component{
  
                 {isProfileOpen &&         
                     <Modal>
-                        <Profile2 isProfileOpen={isProfileOpen} user={this.props.user} loadUser={this.props.loadUser} toggleModal={this.toggleModal}/>
+                        <Profile isProfileOpen={isProfileOpen} user={this.props.user} loadUser={this.props.loadUser} toggleModal={this.toggleModal}/>
                     </Modal>
                 }
-                <Sidebar 
+                <ViewController 
                     onRouteChange={this.props.onRouteChange} 
                     onSearchChange={this.onSearchChange}
                     onSetSearchSelect={this.onSetSearchSelect}
                     loading={this.state.loading} 
                     data={filterThings}
                     onSetFormNav={this.onSetFormNav}
-                    formnav={this.state.formnav}
-                    summaryForm={summaryForm}   
+                    formnav={this.state.formnav} 
                     handlePost = {this.handlePost}
                     toggleModal={this.toggleModal}
                     user = {this.props.user}

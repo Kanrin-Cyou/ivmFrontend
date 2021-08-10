@@ -1,23 +1,19 @@
 import React from 'react';
 import clsx from 'clsx';
-import InputForm from '../form/form';
-import ListGroup from '../listgroup/listgroup';
-import Profile from '../profile/profile';
+import InputForm from '../../components/inputForm/inputForm';
+import ListGroup from '../../components/listgroup/listgroup';
+import ProfileMenu from '../../components/profile/profileMenu';
 import { fade,makeStyles,useTheme,Drawer,AppBar,Toolbar,List,CssBaseline,Typography,InputBase,Divider,IconButton,ListItem,ListItemIcon,ListItemText,MenuItem,Select,Box } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import SearchIcon from '@material-ui/icons/Search';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import AssignmentReturnIcon from '@material-ui/icons/AssignmentReturn';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-import FaceIcon from '@material-ui/icons/Face';
-import MoneyOffIcon from '@material-ui/icons/MoneyOff';
-import AmpStoriesIcon from '@material-ui/icons/AmpStories';
-import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
-import LocalMallIcon from '@material-ui/icons/LocalMall';
+import iconGenerator from './icon.jsx'
+import sqlList from './sqlConstants.js'
+import displayList from './displayConstant.js'
+import drawerList from './drawerConstant.js'
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
 
@@ -54,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: 'nowrap',
+    whiteSpace: 'wrap',
   },
 
   drawerOpen: {
@@ -151,34 +147,14 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+//MARK: - Using Material-UI Drawer VIEW
+
 export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [openForm, setOpenForm] = React.useState('');
   const [modifiedData,setModifiedData] = React.useState({});
-
-  const summaryList = [
-    ["Customer","customer"],
-    ["Supplyer","supplyer"],
-    ["Goods","goods"],
-    ["Inventory","inventory"],
-    ["Imports","imports"],
-    ["Imports Return","importsreturn"],
-    ["Sales","sales"],
-    ["Sales Return","salesreturn"]
-    ]
-
-  const iconGenerator = [
-    <FaceIcon/>,
-    <AssignmentIndIcon/>,
-    <CardGiftcardIcon/>,
-    <AmpStoriesIcon/>,
-    <AddShoppingCartIcon/>,
-    <MoneyOffIcon/>,
-    <LocalMallIcon/>,
-    <AssignmentReturnIcon/>,
-  ]
 
   const formGenerator = (whatForm) => {
     const formComponent = whatForm.map((item,i) => { 
@@ -209,12 +185,14 @@ export default function MiniDrawer(props) {
     <div className={classes.root}>
       <CssBaseline />
 
-          <AppBar
+    {/* MARK: - NavBar */}
+        <AppBar
             position="fixed"
             className={
               clsx(classes.appBar, {[classes.appBarShift]: open,})
             }
           >
+            
             <Toolbar>
                   <IconButton
                     color="inherit"
@@ -255,22 +233,26 @@ export default function MiniDrawer(props) {
                       className={classes.select}
                       inputProps={{ 'aria-label': 'Without label'}}
                     >
-                      {props.summaryForm[props.formnav].map((item,i) => {
+                      {sqlList[props.formnav].map((item,i) => {
                         if(item==='id'){return (null)
                         } else {
                           return (               
-                          <MenuItem key={i} value={item}>{item}</MenuItem>)
+                          <MenuItem key={i} value={item}>{displayList[props.formnav][i]}</MenuItem>)
                         }
                       })}
                     </Select>
                   </div>
 
 
-                  <Profile className={classes.Profile} user={props.user} Signout={props.onRouteChange} toggleModal={props.toggleModal}/>
+                  <ProfileMenu className={classes.Profile} 
+                  user={props.user} 
+                  Signout={props.onRouteChange} 
+                  toggleModal={props.toggleModal}
+                  style = {{display:"flex-end", marginRight: 100}}/>
           </Toolbar>
       </AppBar>
 
-
+      {/* MARK: - Left Drawer*/}
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
@@ -289,16 +271,16 @@ export default function MiniDrawer(props) {
                         </IconButton>
                       </div>
                       <Divider />
-                      {formGenerator(summaryList)}
+                      {formGenerator(drawerList)}
       </Drawer>
 
+      {/* MARK: - Tabel*/}
 
       <main className={classes.content}>
           <div className={classes.toolbar} />
             <Box>
               {openForm!=='' ? (<InputForm 
                 formnav={props.formnav} 
-                summaryForm={props.summaryForm} 
                 handlePost = {props.handlePost}
                 modifiedData={modifiedData}
                 openForm = {openForm}
@@ -308,7 +290,6 @@ export default function MiniDrawer(props) {
               <ListGroup 
                 loading={props.loading} 
                 data={props.data ? props.data : ' '}
-                summaryForm={props.summaryForm}
                 formnav={props.formnav}
                 setOpenForm={setOpenForm}
                 openForm = {openForm}
